@@ -4,8 +4,6 @@ import "../App.css"
 const Input = ({ id, label, errorMessage, onChange, name, value,type, placeholder }) => {
   const [focused, setFocused] = useState(false);
 
- 
-
   return name === "password" ? (
     <div>
       <div className="flex items-center justify-between">
@@ -18,7 +16,7 @@ const Input = ({ id, label, errorMessage, onChange, name, value,type, placeholde
         <div className="text-sm">
           <a
             href="#"
-            className="font-semibold text-indigo-600 hover:text-indigo-500"
+            className="font-semibold text-blue-500 hover:text-blue-700"
           >
             Forgot password?
           </a>

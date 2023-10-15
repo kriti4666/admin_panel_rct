@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import Input from "../components/Input";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { authenticate } from "../redux/auth/action";
 
 const initValues = {
   email: "",
@@ -8,6 +11,8 @@ const initValues = {
 
 const Login = () => {
   const [formData, setFormData] = useState(initValues);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const inputs = [
     {
@@ -36,8 +41,9 @@ const Login = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleLogin = (e) => {
     e.preventDefault(); 
+    dispatch(authenticate(formData));
   };
 
   // console.log(formData);
@@ -47,13 +53,13 @@ const Login = () => {
       <>
         <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
           <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-            <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-              Sign up
+            <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-blue-700">
+              SignIn
             </h2>
           </div>
 
           <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-            <form className="space-y-6" onSubmit={handleSubmit} noValidate>
+            <form className="space-y-6" onSubmit={handleLogin} >
               {inputs.map((input) => (
                 <Input
                   key={input.id}
@@ -71,9 +77,9 @@ const Login = () => {
               <div>
                 <button
                   type="submit"
-                  className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                  className="flex w-full justify-center rounded-md bg-blue-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-blue-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
                 >
-                  Sign up
+                  Sign in
                 </button>
               </div>
             </form>
