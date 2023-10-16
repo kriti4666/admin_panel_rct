@@ -1,26 +1,60 @@
-import React from "react";
+import React, { useState } from "react";
 import { Stepper, Step, Button, Typography } from "@material-tailwind/react";
 import {
   CogIcon,
   UserIcon,
   BuildingLibraryIcon,
 } from "@heroicons/react/24/outline";
+import BasicDetails from "./MultistepForm/BasicDetails";
+import FileUpload from "./MultistepForm/FileUpload";
 
 const Form = () => {
   const [activeStep, setActiveStep] = React.useState(0);
-  const [isLastStep, setIsLastStep] = React.useState(false);
-  const [isFirstStep, setIsFirstStep] = React.useState(false);
 
-  const handleNext = () => !isLastStep && setActiveStep((cur) => cur + 1);
-  const handlePrev = () => !isFirstStep && setActiveStep((cur) => cur - 1);
+  // Define state variables for each step
+  const [basicDetails, setBasicDetails] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    address: {
+      line1: "",
+      line2: "",
+      city: "",
+      state: "",
+      pincode: "",
+      country: "",
+    },
+  });
+
+  const [fileUpload, setFileUpload] = useState({
+    files: [],
+    geolocationStatus: "Not Captured",
+  });
+
+
+  const handleNext = () => {
+    if (activeStep === 0) {
+      // Handle validation for the first step (Basic Details) here
+      // If validation is successful, move to the next step
+      setActiveStep((cur) => cur + 1);
+    } else if (activeStep === 1) {
+      // Handle validation for the second step (File Upload) here
+      // If validation is successful, move to the next step
+      setActiveStep((cur) => cur - 1);
+    }
+    // Add additional steps and validation logic as needed
+  };
+
+  const handlePrev = () => {
+    if (activeStep > 0) {
+      setActiveStep(activeStep - 1);
+    }
+  };
+
   return (
     <div>
       <div className="w-full px-24 py-4">
-        <Stepper
-          activeStep={activeStep}
-          isLastStep={(value) => setIsLastStep(value)}
-          isFirstStep={(value) => setIsFirstStep(value)}
-        >
+        <Stepper activeStep={activeStep}>
           <Step onClick={() => setActiveStep(0)}>
             <UserIcon className="h-5 w-5" />
             <div className="absolute -bottom-[4.5rem] w-max text-center">
@@ -34,7 +68,7 @@ const Form = () => {
                 color={activeStep === 0 ? "blue-gray" : "gray"}
                 className="font-normal"
               >
-                Details about yout account.
+                Basic Details.
               </Typography>
             </div>
           </Step>
@@ -51,7 +85,7 @@ const Form = () => {
                 color={activeStep === 1 ? "blue-gray" : "gray"}
                 className="font-normal"
               >
-                Details about yout account.
+                Upload your Files.
               </Typography>
             </div>
           </Step>
@@ -68,19 +102,28 @@ const Form = () => {
                 color={activeStep === 2 ? "blue-gray" : "gray"}
                 className="font-normal"
               >
-                Details about yout account.
+                Choose the option.
               </Typography>
             </div>
           </Step>
         </Stepper>
-        <div className="mt-32 flex justify-between">
-          <Button onClick={handlePrev} disabled={isFirstStep}>
-            Prev
-          </Button>
-          <Button onClick={handleNext} disabled={isLastStep}>
-            Next
-          </Button>
-        </div>
+        {activeStep === 0 && (
+          <BasicDetails
+            data={basicDetails}
+            setData={setBasicDetails}
+            handleNext={handleNext}
+          />
+        )}
+
+        {activeStep === 1 && (
+          <FileUpload
+            data={fileUpload}
+            setData={setFileUpload}
+            handleNext={handleNext}
+            handlePrev={handlePrev}
+          />
+        )}
+        
       </div>
     </div>
   );
